@@ -7,7 +7,7 @@ from wikiapi import WikiApi
 from urllib.parse import urlparse, urlencode
 from urllib.request import urlopen, Request
 from urllib.error import HTTPError
-import duckduckgo
+#import duckduckgo
 
 import json
 import os
@@ -62,12 +62,12 @@ def pr(req):
     results = wiki.find(query) 
     article = wiki.get_article(results[0])
     result = article.summary 
-    result1 = duckduckgo.get_zci(query)
+  #  result1 = duckduckgo.get_zci(query)
     
     return {
         "speech": result,
         "displayText": query,
-        "data": result1,
+     #   "data": result1,
         # "contextOut": [],
         "source": "apiai-weather-webh29ook-sample"
     }    
