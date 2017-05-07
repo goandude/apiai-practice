@@ -3,7 +3,7 @@
 from __future__ import print_function
 from future.standard_library import install_aliases
 install_aliases()
-
+from wikiapi import WikiApi
 from urllib.parse import urlparse, urlencode
 from urllib.request import urlopen, Request
 from urllib.error import HTTPError
@@ -17,7 +17,8 @@ from flask import make_response
 
 # Flask app should start in global layout
 app = Flask(__name__)
-
+wiki = WikiApi()
+wiki = WikiApi({ 'locale' : 'es'}) # to specify your locale, 'en' is default
 
 @app.route('/webhook', methods=['POST'])
 @app.route('/webhook1', methods=['POST'])
@@ -56,9 +57,10 @@ def pr(req):
     
     result = req.get("result")
     parameters = result.get("parameters")
-    query = parameters.get("q")
-    
-    
+  # query = parameters.get("q")
+    results = wiki.find('Barack Obama') 
+    article = wiki.get_article(results[0])
+    query = article.summary 
     return {
         "speech": query,
         "displayText": query,
