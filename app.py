@@ -7,6 +7,7 @@ from wikiapi import WikiApi
 from urllib.parse import urlparse, urlencode
 from urllib.request import urlopen, Request
 from urllib.error import HTTPError
+import duckduckgo
 
 import json
 import os
