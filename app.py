@@ -18,7 +18,7 @@ from flask import make_response
 # Flask app should start in global layout
 app = Flask(__name__)
 wiki = WikiApi()
-wiki = WikiApi({ 'locale' : 'es'}) # to specify your locale, 'en' is default
+wiki = WikiApi({ 'locale' : 'en'}) # to specify your locale, 'en' is default
 
 @app.route('/webhook', methods=['POST'])
 @app.route('/webhook1', methods=['POST'])
@@ -57,8 +57,8 @@ def pr(req):
     
     result = req.get("result")
     parameters = result.get("parameters")
-  # query = parameters.get("q")
-    results = wiki.find('Barack Obama') 
+    query = parameters.get("q")
+    results = wiki.find(query) 
     article = wiki.get_article(results[0])
     query = article.summary 
     return {
