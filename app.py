@@ -26,27 +26,13 @@ def webhook1():
 
     print("Request:")
     print(json.dumps(req, indent=4))
-    result = req.get("result")
-    parameters = result.get("parameters")
-    query = parameters.get("q")
-    #res = processRequest1(req)
+    res = pr(req)
 
-    #res = json.dumps(res, indent=4)
+    res = json.dumps(res, indent=4)
     # print(res)
-     print("Response:")
-
-    r = {
-        "speech": "The query is "+query,
-        "displayText": query,
-        # "data": data,
-        # "contextOut": [],
-        "source": "apiai-weather-webh28ook-sample"
-    }
-
-    res = json.dumps(r, indent=4)
-    print(res)
+    print("Response:")
     r = make_response(res)    
-        
+     
     r.headers['Content-Type'] = 'application/json'
     
 
@@ -65,6 +51,21 @@ def webhook():
     r = make_response(res)
     r.headers['Content-Type'] = 'application/json'
     return r
+
+def pr(req):
+    
+    result = req.get("result")
+    parameters = result.get("parameters")
+    query = parameters.get("q")
+    
+    
+    return {
+        "speech": query,
+        "displayText": query,
+        # "data": data,
+        # "contextOut": [],
+        "source": "apiai-weather-webh29ook-sample"
+    }    
 
 
 def processRequest(req):
