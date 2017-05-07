@@ -20,6 +20,34 @@ app = Flask(__name__)
 
 
 @app.route('/webhook', methods=['POST'])
+@app.route('/webhook1', methods=['POST'])
+def webhook1():
+    req = request.get_json(silent=True, force=True)
+
+    print("Request:")
+    print(json.dumps(req, indent=4))
+    result = req.get("result")
+    parameters = result.get("parameters")
+    query = parameters.get("q")
+    #res = processRequest1(req)
+
+    #res = json.dumps(res, indent=4)
+    # print(res)
+     print("Response:")
+
+    r = {
+        "speech": "The query is "+query,
+        "displayText": query,
+        # "data": data,
+        # "contextOut": [],
+        "source": "apiai-weather-webh26ook-sample"
+    }
+
+    r.headers['Content-Type'] = 'application/json'
+       print(r)
+
+    return r
+
 def webhook():
     req = request.get_json(silent=True, force=True)
 
@@ -87,7 +115,6 @@ def makeWebhookResult(data):
              ", the temperature is " + condition.get('temp') + " " + units.get('temperature')
 
     print("Response:")
-    print("Response:")
     print(speech)
 
     return {
@@ -95,7 +122,7 @@ def makeWebhookResult(data):
         "displayText": speech,
         # "data": data,
         # "contextOut": [],
-        "source": "apiai-weather-webh25ook-sample"
+        "source": "apiai-weather-webh26ook-sample"
     }
 
 
