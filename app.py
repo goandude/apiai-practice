@@ -23,7 +23,10 @@ wiki = WikiApi({ 'locale' : 'en'}) # to specify your locale, 'en' is default
 
 @app.route('/webhook', methods=['POST'])
 @app.route('/webhook1', methods=['POST'])
+
+
 def webhook1():
+
     req = request.get_json(silent=True, force=True)
 
     print("Request:")
@@ -55,6 +58,14 @@ def webhook():
     return r
 
 def pr(req):
+     return {
+        "speech": "It reached properly def pr",
+        "displayText":"It reached properly def pr" ,
+     #   "data": result1,
+        # "contextOut": [],
+        "source": "apiai-weather-webh29ook-sample"
+    }    
+    
     
     result = req.get("result")
     parameters = result.get("parameters")
