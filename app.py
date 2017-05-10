@@ -58,30 +58,23 @@ def webhook():
     return r
 
 def pr(req):
-     return {
-        "speech": "It reached properly def pr",
-        "displayText":"It reached properly def pr" ,
-     #   "data": result1,
-        # "contextOut": [],
-        "source": "apiai-weather-webh29ook-sample"
-    }    
+     
     
-    
-    #result = req.get("result")
-    #parameters = result.get("parameters")
-    #query = parameters.get("q")
-    #results = wiki.find(query) 
-    #article = wiki.get_article(results[0])
-    #result = article.summary 
+    result = req.get("result")
+    parameters = result.get("parameters")
+    query = parameters.get("q")
+    results = wiki.find(query) 
+    article = wiki.get_article(results[0])
+    result = article.summary 
   # # result1 = duckduckgo.get_zci(query)
     
-    #return {
-    #    "speech": result,
-    #    "displayText": query,
+    return {
+        "speech": result,
+        "displayText": query,
      #   "data": result1,
-        # "contextOut": [],
-     #   "source": "apiai-weather-webh29ook-sample"
-    #}    
+         "contextOut": [],
+        "source": "apiai-weather-webh29ook-sample"
+    }    
 
 
 def processRequest(req):
