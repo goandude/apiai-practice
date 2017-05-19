@@ -65,7 +65,7 @@ def pr(req):
     query = parameters.get("q")
     results = wiki.find(query) 
     article = wiki.get_article(results[0])
-    result = article.summary 
+    result = article.content 
   # # result1 = duckduckgo.get_zci(query)
     
     return {
