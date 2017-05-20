@@ -23,6 +23,31 @@ wiki = WikiApi({ 'locale' : 'en'}) # to specify your locale, 'en' is default
 
 @app.route('/webhook', methods=['POST'])
 @app.route('/webhook1', methods=['POST'])
+@app.route('/webhookquiz', methods=['POST'])
+
+
+def webhookquiz():
+
+    req = request.get_json(silent=True, force=True)
+
+    print("Request:")
+    print(json.dumps(req, indent=4))
+    res = quiz(req)
+
+    res = json.dumps(res, indent=4)
+    # print(res)
+    print("Response:")
+    r = make_response(res)    
+     
+    r.headers['Content-Type'] = 'application/json'
+    
+
+    return r
+
+
+
+
+
 
 
 def webhook1():
@@ -76,6 +101,31 @@ def pr(req):
         "source": "apiai-weather-webh29ook-sample"
     }    
 
+def quiz(req):
+     
+    
+    result = req.get("result")
+    parameters = result.get("parameters")
+    query = parameters.get("text")
+    parameters1 = result.get("contexts")
+    quizword = parameters.get("name")
+    
+    if ( query == quizword): 
+        result = "That is absolutely correct"
+        else
+        result = "That is wrong. It is spelt C A T"
+    #results = wiki.find(query) 
+    #article = wiki.get_article(results[0])
+    #result = article.content 
+  # # result1 = duckduckgo.get_zci(query)
+    
+    return {
+        "speech": result,
+        "displayText": query,
+     #   "data": result1,
+         "contextOut": [cat],
+        "source": "apiai-weather-webh29ook-sample"
+    }    
 
 def processRequest(req):
   
