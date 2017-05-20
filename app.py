@@ -21,8 +21,6 @@ app = Flask(__name__)
 wiki = WikiApi()
 wiki = WikiApi({ 'locale' : 'en'}) # to specify your locale, 'en' is default
 
-@app.route('/webhook', methods=['POST'])
-@app.route('/webhook1', methods=['POST'])
 @app.route('/webhookquiz', methods=['POST'])
 
 
@@ -49,6 +47,8 @@ def webhookquiz():
 
 
 
+@app.route('/webhook1', methods=['POST'])
+
 
 def webhook1():
 
@@ -68,6 +68,9 @@ def webhook1():
 
     return r
 
+
+
+@app.route('/webhook', methods=['POST'])
 def webhook():
     req = request.get_json(silent=True, force=True)
 
