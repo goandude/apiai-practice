@@ -123,7 +123,7 @@ def quiz(req):
         "speech": result,
         "displayText": query,
      #   "data": result1,
-         "contextOut": [cat],
+         "contextOut": [],
         "source": "apiai-weather-webh29ook-sample"
     }    
 
