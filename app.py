@@ -107,13 +107,13 @@ def pr(req):
 def quiz(req):
      
     
-   # result = req.get("result")
-   ## parameters = result.get("parameters")
-    #query = parameters.get("text")
+    result = req.get("result")
+    parameters = result.get("parameters")
+    query = parameters.get("text")
     #result1 = req.get("contexts")
     #quizword = result1.get("name")
     
-    query = "cat"
+    #query = "cat"
     quizword = "dog"
     
     print("query is ")
