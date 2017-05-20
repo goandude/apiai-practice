@@ -110,7 +110,7 @@ def quiz(req):
     parameters1 = result.get("contexts")
     quizword = parameters.get("name")
     
-    if ( query == quizword): 
+    if query == quizword : 
         result = "That is absolutely correct"
         else:
         result = "That is wrong. It is spelt C A T"
