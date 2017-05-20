@@ -109,7 +109,8 @@ def quiz(req):
     query = parameters.get("text")
     parameters1 = result.get("contexts")
     quizword = parameters.get("name")
-    
+    print "query is ",query
+    print "quizword is ",quizword
     if query == quizword : 
         result = "That is absolutely correct"
     else:
