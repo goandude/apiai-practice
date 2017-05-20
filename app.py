@@ -112,7 +112,7 @@ def quiz(req):
     
     if query == quizword : 
         result = "That is absolutely correct"
-        else:
+    else:
         result = "That is wrong. It is spelt C A T"
     #results = wiki.find(query) 
     #article = wiki.get_article(results[0])
