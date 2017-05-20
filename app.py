@@ -110,11 +110,12 @@ def quiz(req):
     result = req.get("result")
     parameters = result.get("parameters")
     query = parameters.get("text")
-    result1 = result.get("contexts")
-    quizword = result1.get("name")
+    
+    contexts = result.get("contexts")
+    quizword = contexts[0].get("name")
     
     #query = "cat"
-    quizword = "dog"
+    #quizword = "dog"
     
     print("query is ")
     print(query)
