@@ -107,8 +107,9 @@ def quiz(req):
     result = req.get("result")
     parameters = result.get("parameters")
     query = parameters.get("text")
-    parameters1 = result.get("contexts")
-    quizword = parameters.get("name")
+    result1 = req.get("contexts")
+    quizword = result1.get("name")
+    
     print("query is ")
     print(query)
     print("quizword is ")
