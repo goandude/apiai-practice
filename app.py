@@ -73,6 +73,17 @@ def play_spelling(req):
   what_to_say_next = "Hmm..."
   
   if word_just_asked is None:
+    if not word_list:
+      users_word = get_what_user_said(result)
+      if "spelling" in users_word:
+        what_to_say_next = "What words do you want to spell?"
+        next_word = None
+        next_index = None
+      else:
+        set_word_list(users_word)
+        next_word = None
+        next_index = None
+    else:
       next_index = 0
       next_word = word_list[next_index]
       what_to_say_next = "Spell %s" % next_word
@@ -89,7 +100,7 @@ def play_spelling(req):
           if next_word is not None:
             what_to_say_next += "Spell %s" % next_word
           else:
-            what_to_say_next += "No more words to spell"
+            what_to_say_next += "Great job, you spelled all of your words!! More spelling or all done?"
         else:
           next_word = word_just_asked
           next_index = index
