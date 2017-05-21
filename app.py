@@ -24,6 +24,7 @@ wiki = WikiApi({ 'locale' : 'en'}) # to specify your locale, 'en' is default
 
 word_list = ['where', 'about', 'whether', 'really']
 
+
 def webhookquiz():
     req = request.get_json(silent=True, force=True)
     print("Request:")
@@ -51,6 +52,7 @@ def quiz(request):
         json = play_vocab(request)
         
     return json
+
 
 def play_spelling(request):
     result = request.get("result")
@@ -94,11 +96,13 @@ def play_spelling(request):
         "source": "apiai-practice"
     }
 
+
 def get_next_word(current_word):
     for i, word in enumerate(word_list):
         if current_word == word and i < len(word_list)-1:
             return word_list[i+1]
     return None
+
 
 def play_vocab(request):
     
