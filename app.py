@@ -28,7 +28,7 @@ WRONG_ANSWER = ["Close. ", "Almost. "]
 TRY_AGAIN = ["Try again. "]
 SPELL_PROMPT = ["Spell "]
 GREAT_JOB = ["Great job, you spelled all of your words!! ", "Way to go, you did a great job!! "]
-EXIT_QUERY = "More spelling, or all done? "
+EXIT_QUERY = "More spelling? Or all done? "
 SOUND_EXAMPLE ='Good job! <audio src="https://actions.google.com/sounds/v1/alarms/digital_watch_alarm_long.ogg">a digital watch alarm</audio>'
 
 def playing_spelling(req):
