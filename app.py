@@ -22,6 +22,7 @@ wiki = WikiApi({ 'locale' : 'en'}) # to specify your locale, 'en' is default
 
 @app.route('/webhookquiz', methods=['POST'])
 
+word_list = ['where', 'about', 'whether', 'really']
 
 def webhookquiz():
     req = request.get_json(silent=True, force=True)
