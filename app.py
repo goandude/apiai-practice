@@ -56,28 +56,34 @@ def quiz(req):
 def play_spelling(req):
   result = req.get("result")
 
+  print("DEBUG: Playing spelling")
+  
   word = None
-  next_word = None
   for context in result.get("contexts"):
     if context.get("name") == "spell":
       word = context.get("parameters").get("Word")
       break
-  print("Word is %s" % (word))
-
-  parameters = result.get("parameters")
-  users_word = parameters.get("text")
-
-  if users_word is not None:
-    if word == users_word:
+  print("DEBUG: Word is %s" % (word))
+  
+  if word is None:
       next_word = get_next_word(word)
-      result = "Correct! "
-      if next_word is not None:
-        result += "Spell %s" % next_word
-      else:
-        result += "No more words to spell"
-    else:
-      next_word = word
-      result = "Not correct. Try again. %s" % next_word
+      result = "Spell %s" % next_word
+  else:  
+      next_word = None
+      parameters = result.get("parameters")
+      users_word = parameters.get("text")
+
+      if users_word is not None:
+        if word == users_word:
+          next_word = get_next_word(word)
+          result = "Correct! "
+          if next_word is not None:
+            result += "Spell %s" % next_word
+          else:
+            result += "No more words to spell"
+        else:
+          next_word = word
+          result = "Not correct. Try again. %s" % next_word
 
   return {
       "speech":
@@ -100,6 +106,8 @@ def play_spelling(req):
 
 
 def get_next_word(current_word):
+  if current_word is None:
+    return word_list[0]
   for i, word in enumerate(word_list):
     if current_word == word and i < len(word_list) - 1:
       return word_list[i + 1]
