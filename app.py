@@ -37,8 +37,6 @@ def get_word_just_asked(result):
       word = context.get("parameters").get("Word")
       index = context.get("parameters").get("Index")
       word_list = context.get("parameters").get("WordList")
-      if word_list:
-        word_list = word_list.split()
       break
   print("DEBUG: Word just asked is %s, %s, %s" % (word, index, word_list))
   return word, index, word_list
@@ -78,6 +76,8 @@ def play_spelling(req):
   print("DEBUG: Playing spelling")
   
   word_just_asked, index, word_list = get_word_just_asked(result)
+  if word_list:
+    word_list = word_list.split()
   what_to_say_next = "Hmm..."
   
   if word_just_asked is None:
@@ -115,6 +115,10 @@ def play_spelling(req):
           next_index = index
           what_to_say_next = "Not correct. Try again. %s" % next_word
 
+  next_word_list = None
+  if word_list is not None:
+    next_word_list = " ".join(word_list)     
+          
   return {
       "speech":
           what_to_say_next,
@@ -126,7 +130,7 @@ def play_spelling(req):
               "parameters": {
                   "Word": next_word,
                   "Index": next_index,
-                  "WordList": " ".join(word_list),
+                  "WordList": next_word_list,
               },
           },
       ],
