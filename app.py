@@ -24,7 +24,6 @@ word_list = ["where", "about", "whether", "really"]
 
 
 def playing_spelling(request):
-  contexts = request.get("contexts")
   for context in result.get("contexts"):
     if context.get("name") == "spell":
       return True
