@@ -34,9 +34,10 @@ def get_word_just_asked(result):
   for context in result.get("contexts"):
     if context.get("name") == "spell":
       word = context.get("parameters").get("Word")
+      index = context.get("parameters").get("Index")
       break
   print("DEBUG: Word just asked is %s" % (word))
-  return word
+  return word, index
 
 
 def get_what_user_said(result):
@@ -50,16 +51,17 @@ def set_word_list(input_text):
   return input_text.lower().split()
 
 
-def get_next_word(current_word):
-  word = None
-  if current_word is None:
-    word = word_list[0]
+def get_next_word(index):
+  idx = int(index)
+  if idx < len(word_list) - 1:
+      idx = idx + 1
+      word = word_list[idx]
+      index = str(idx)
   else:
-    for i, word in enumerate(word_list):
-      if current_word == word and i < len(word_list) - 1:
-        word = word_list[i + 1]
-  print("DEBUG: Next word to spell is %s" % (word))
-  return word
+    word = None
+    index = -1
+  print("DEBUG: Next word to spell is %s, index %s" % (word, index))
+  return word, index
 
 
 def play_spelling(req):
@@ -67,27 +69,30 @@ def play_spelling(req):
 
   print("DEBUG: Playing spelling")
   
-  word_just_asked = get_word_just_asked(result)
+  word_just_asked, index = get_word_just_asked(result)
   what_to_say_next = "Hmm..."
   
   if word_just_asked is None:
-      next_word = get_next_word(word_just_asked)
+      next_word = word_list[0]
+      index = 0
       what_to_say_next = "Spell %s" % next_word
   else:  
       users_word = get_what_user_said(result)
 
       next_word = None
+      next_index = None
       if users_word is not None:
         if word_just_asked == users_word:
           what_to_say_next = "Correct! "
 
-          next_word = get_next_word(word_just_asked)
+          next_word, next_index = get_next_word(index)
           if next_word is not None:
             what_to_say_next += "Spell %s" % next_word
           else:
             what_to_say_next += "No more words to spell"
         else:
           next_word = word_just_asked
+          next_index = index
           what_to_say_next = "Not correct. Try again. %s" % next_word
 
   return {
@@ -100,6 +105,7 @@ def play_spelling(req):
               "name": "spell",
               "parameters": {
                   "Word": next_word,
+                  "Index": next_index,
               },
           },
       ],
