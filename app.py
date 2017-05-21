@@ -80,8 +80,7 @@ def play_spelling(req):
     word_list = word_list.split()
   what_to_say_next = "Hmm..."
   
-  if word_just_asked is None:
-    if not word_list:
+  if not word_list:
       users_word = get_what_user_said(result)
       if "spell" in users_word:
         what_to_say_next = "What words do you want to spell?"
@@ -90,15 +89,11 @@ def play_spelling(req):
       else:
         word_list = set_word_list(users_word)
         print("DEBUG: Set word list to " , word_list)
-        next_word = None
-        next_index = None
-    else:
-      next_index = 0
-      next_word = word_list[next_index]
-      what_to_say_next = "Spell %s" % next_word
-  else:  
+        next_index = 0
+        next_word = word_list[next_index]
+        what_to_say_next = "Spell %s" % next_word
+    else:    
       users_word = get_what_user_said(result)
-
       next_word = None
       next_index = None
       if users_word is not None:
