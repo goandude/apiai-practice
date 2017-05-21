@@ -3,10 +3,6 @@
 from __future__ import print_function
 from future.standard_library import install_aliases
 install_aliases()
-from wikiapi import WikiApi
-from urllib.parse import urlparse, urlencode
-from urllib.request import urlopen, Request
-from urllib.error import HTTPError
 
 import json
 import os
@@ -18,9 +14,6 @@ from flask import make_response
 
 # Flask app should start in global layout
 app = Flask(__name__)
-
-# word_list = ["where", "about", "whether", "really"]
-# word_list = []
 
 WHAT_DO_YOU_WANT_TO_SPELL = ["Tell me your spelling list. ", "What are your words today? "]
 RIGHT_ANSWER = ["Yep. ", "That's right. ", "Nice! ", "Well done! ", "Good. "]
@@ -67,7 +60,7 @@ def set_word_list(input_text):
 def get_next_word(index, word_list):
   idx = int(index)
   if idx < len(word_list) - 1:
-      idx = idx + 1
+      idx += 1
       word = word_list[idx]
       index = str(idx)
   else:
