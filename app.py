@@ -19,7 +19,7 @@ from flask import make_response
 app = Flask(__name__)
 
 # word_list = ["where", "about", "whether", "really"]
-word_list = []
+# word_list = []
 
 
 def playing_spelling(req):
@@ -36,9 +36,12 @@ def get_word_just_asked(result):
     if context.get("name") == "spell":
       word = context.get("parameters").get("Word")
       index = context.get("parameters").get("Index")
+      word_list = context.get("parameters").get("WordList")
+      if word_list:
+        word_list = word_list.split()
       break
   print("DEBUG: Word just asked is %s" % (word))
-  return word, index
+  return word, index, word_list
 
 
 def get_what_user_said(result):
@@ -56,7 +59,7 @@ def set_word_list(input_text):
   return input_text.lower().split()
 
 
-def get_next_word(index):
+def get_next_word(index, word_list):
   idx = int(index)
   if idx < len(word_list) - 1:
       idx = idx + 1
@@ -74,7 +77,7 @@ def play_spelling(req):
 
   print("DEBUG: Playing spelling")
   
-  word_just_asked, index = get_word_just_asked(result)
+  word_just_asked, index, word_list = get_word_just_asked(result)
   what_to_say_next = "Hmm..."
   
   if word_just_asked is None:
@@ -85,7 +88,8 @@ def play_spelling(req):
         next_word = None
         next_index = None
       else:
-        set_word_list(users_word)
+        word_list = set_word_list(users_word)
+        print("DEBUG: Set word list to " , word_list)
         next_word = None
         next_index = None
     else:
@@ -101,7 +105,7 @@ def play_spelling(req):
         if word_just_asked == users_word:
           what_to_say_next = "Correct! "
 
-          next_word, next_index = get_next_word(index)
+          next_word, next_index = get_next_word(index, word_list)
           if next_word is not None:
             what_to_say_next += "Spell %s" % next_word
           else:
@@ -122,6 +126,7 @@ def play_spelling(req):
               "parameters": {
                   "Word": next_word,
                   "Index": next_index,
+                  "WordList": " ".join(word_list),
               },
           },
       ],
