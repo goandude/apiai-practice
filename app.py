@@ -76,7 +76,7 @@ def play_spelling(req):
   if word_just_asked is None:
     if not word_list:
       users_word = get_what_user_said(result)
-      if "spelling" in users_word:
+      if "spell" in users_word:
         what_to_say_next = "What words do you want to spell?"
         next_word = None
         next_index = None
