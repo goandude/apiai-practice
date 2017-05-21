@@ -4,3 +4,4 @@ wikiapi
 duckduckgo
 wikipedia==1.4.0
 git+https://github.com/ivankliuk/duckduckpy.git
+PyDictionary
