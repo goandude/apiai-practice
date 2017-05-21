@@ -30,7 +30,7 @@ def playing_spelling(req):
   return False
 
 
-def get_word_just_asked(result):
+def get_word_just_asked2(result):
   word = None
   for context in result.get("contexts"):
     if context.get("name") == "spell":
@@ -42,6 +42,10 @@ def get_word_just_asked(result):
 
 
 def get_what_user_said(result):
+  return result.get("resolvedQuery")
+
+
+def get_what_user_said2(result):
     parameters = result.get("parameters")
     users_word = parameters.get("any")
     print("DEBUG: User said %s" % (users_word))
