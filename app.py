@@ -92,7 +92,7 @@ def play_spelling(req):
         next_index = 0
         next_word = word_list[next_index]
         what_to_say_next = "Spell %s" % next_word
-    else:    
+  else:    
       users_word = get_what_user_said(result)
       next_word = None
       next_index = None
