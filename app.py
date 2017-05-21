@@ -10,6 +10,7 @@ from urllib.error import HTTPError
 
 import json
 import os
+import random
 
 from flask import Flask
 from flask import request
@@ -21,14 +22,14 @@ app = Flask(__name__)
 # word_list = ["where", "about", "whether", "really"]
 # word_list = []
 
-WHAT_DO_YOU_WANT_TO_SPELL = "Tell me your spelling list. "
-RIGHT_ANSWER = "Yep. "
-WRONG_ANSWER = "Close. "
-TRY_AGAIN = "Try again. "
-SPELL_PROMPT = "Spell "
-GREAT_JOB = "Great job, you spelled all of your words!! "
+WHAT_DO_YOU_WANT_TO_SPELL = ["Tell me your spelling list. ", "What are your words today? "]
+RIGHT_ANSWER = ["Yep. ", "That's right. ", "Nice! ", "Well done! ", "Good. "]
+WRONG_ANSWER = ["Close. ", "Almost. "]
+TRY_AGAIN = ["Try again. "]
+SPELL_PROMPT = ["Spell "]
+GREAT_JOB = ["Great job, you spelled all of your words!! ", "Way to go, you did a great job!! "]
 EXIT_QUERY = "More spelling, or all done? "
-GREAT_JOB='Good job! <audio src="https://actions.google.com/sounds/v1/alarms/digital_watch_alarm_long.ogg">a digital watch alarm</audio>'
+SOUND_EXAMPLE ='Good job! <audio src="https://actions.google.com/sounds/v1/alarms/digital_watch_alarm_long.ogg">a digital watch alarm</audio>'
 
 def playing_spelling(req):
   result = req.get("result")
@@ -88,7 +89,7 @@ def play_spelling(req):
   if not word_list:
       users_word = get_what_user_said(result)
       if "spell" in users_word:
-        what_to_say_next = WHAT_DO_YOU_WANT_TO_SPELL
+        what_to_say_next = random.choice(WHAT_DO_YOU_WANT_TO_SPELL)
         next_word = None
         next_index = None
       else:
@@ -96,24 +97,24 @@ def play_spelling(req):
         print("DEBUG: Set word list to " , word_list)
         next_index = 0
         next_word = word_list[next_index]
-        what_to_say_next = "%s %s" % (SPELL_PROMPT, next_word)
+        what_to_say_next = "%s %s" % (random.choice(SPELL_PROMPT), next_word)
   else:    
       users_word = get_what_user_said(result)
       next_word = None
       next_index = None
       if users_word is not None:
         if word_just_asked == "".join(users_word.split()):
-          what_to_say_next = RIGHT_ANSWER
+          what_to_say_next = random.choice(RIGHT_ANSWER)
 
           next_word, next_index = get_next_word(index, word_list)
           if next_word is not None:
-            what_to_say_next += "%s %s" % (SPELL_PROMPT, next_word)
+            what_to_say_next += "%s %s" % (random.choice(SPELL_PROMPT), next_word)
           else:
-            what_to_say_next += GREAT_JOB + EXIT_QUERY
+            what_to_say_next += random.choice(GREAT_JOB) + EXIT_QUERY
         else:
           next_word = word_just_asked
           next_index = index
-          what_to_say_next = "%s. %s. %s. %s." % (WRONG_ANSWER, ", ".join(next_word), TRY_AGAIN, next_word)
+          what_to_say_next = "%s. %s. %s. %s." % (random.choice(WRONG_ANSWER), ", ".join(next_word), random.choice(TRY_AGAIN), next_word)
 
   next_word_list = None
   if word_list is not None:
