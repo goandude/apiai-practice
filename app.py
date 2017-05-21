@@ -43,31 +43,70 @@ def webhookquiz():
 def quiz(request):
     result = request.get("result")
     parameters = result.get("parameters")
-    query = parameters.get("text")
-    
-    contexts = result.get("contexts")
-    quizword = contexts[0].get("name")
-    
-    print("query is ")
-    print(query)
-    print("quizword is ")
-    print(quizword)
-    
-    if query == quizword : 
-        result = "That is absolutely correct"
+    game = parameters.get("Game")
+
+    if (game == 'spelling'):
+        json = play_spelling(request)
     else:
-        result = "That is wrong. It is spelt C A T"
-    #results = wiki.find(query) 
-    #article = wiki.get_article(results[0])
-    #result = article.content 
-    #result1 = duckduckgo.get_zci(query)
+        json = play_vocab(request)
+        
+    return json
+
+def play_spelling(request):
+    result = request.get("result")
+
+    word = None
+    next_word = None
+    for context in result.get("contexts"):
+        if context.get("name") == 'spell':
+            word = context.get("parameters").get("Word")
+            break
+    print("Word is " % (word))
     
+    parameters = result.get("parameters")
+    users_word = parameters.get("text")
+    
+    if users_word is not None:
+        if word == users_word:
+            next_word = get_next_word(word)
+            result = "Correct! "
+            if next_word is not None:
+                result = result + "Spell %s" % next_word
+            else
+                result = result + "No more words to spell"
+        else
+            next_word = word
+            result = "Not correct. Try again. %s" % next_word
+ 
     return {
         "speech": result,
-        "displayText": query,
-     #   "data": result1,
-         "contextOut": [],
-        "source": "apiai-weather-webh29ook-sample"
+        "displayText": result,
+        "contextOut": [
+            {
+                "name": "spell",
+                "parameters": {
+                    "Game.original": "spell",
+                    "Game": "spelling",
+                    “Word”: next_word,
+                 },
+            },
+        ],
+        "source": "apiai-practice"
+    }
+
+def get_next_word(current_word):
+    for i, word in enumerate(word_list):
+        if current_word == word and i < len(word_list)-1:
+            return word_list[i+1]
+    return None
+
+def play_vocab(request):
+    
+    return {
+        "speech": 'Nothing to say',
+        "displayText": 'Nothing to say',
+        "contextOut": [],
+        "source": "apiai-practice"
     }
 
 
