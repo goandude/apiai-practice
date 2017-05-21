@@ -28,7 +28,7 @@ TRY_AGAIN = "Try again. "
 SPELL_PROMPT = "Spell "
 GREAT_JOB = "Great job, you spelled all of your words!! "
 EXIT_QUERY = "More spelling, or all done? "
-
+GREAT_JOB='<speak> Good job! <audio src="https://actions.google.com/sounds/v1/alarms/digital_watch_alarm_long.ogg">a digital watch alarm</audio> </speak>'
 
 def playing_spelling(req):
   result = req.get("result")
