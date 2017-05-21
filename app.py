@@ -21,6 +21,13 @@ app = Flask(__name__)
 # word_list = ["where", "about", "whether", "really"]
 # word_list = []
 
+WHAT_DO_YOU_WANT_TO_SPELL = "What words do you want to spell?"
+RIGHT_ANSWER = "Correct! "
+WRONG_ANSWER = "Not correct. Try again."
+SPELL_PROMPT = "Spell "
+GREAT_JOB = "Great job, you spelled all of your words!!"
+EXIT_QUERY = "More spelling or all done?"
+
 
 def playing_spelling(req):
   result = req.get("result")
@@ -108,7 +115,7 @@ def play_spelling(req):
         else:
           next_word = word_just_asked
           next_index = index
-          what_to_say_next = "Not correct. Try again. %s" % next_word
+          what_to_say_next = "Not correct. %s Try again. %s" % (" ".join(next_word), next_word)
 
   next_word_list = None
   if word_list is not None:
