@@ -25,7 +25,7 @@ RESULT = "result"
 CONTEXTS = "contexts"
 
 word_list = ["where", "about", "whether", "really"]
-games = set(SPELL, VOCAB, READ)
+games = set([SPELL, VOCAB, READ])
 
 
 def get_game(req):
