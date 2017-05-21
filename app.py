@@ -17,13 +17,12 @@ from flask import make_response
 
 # Flask app should start in global layout
 app = Flask(__name__)
-wiki = WikiApi()
-wiki = WikiApi({"locale": "en"})  # to specify your locale, 'en' is default
 
 word_list = ["where", "about", "whether", "really"]
 
 
-def playing_spelling(request):
+def playing_spelling(req):
+  result = req.get("result")
   for context in result.get("contexts"):
     if context.get("name") == "spell":
       return True
