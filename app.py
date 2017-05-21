@@ -23,6 +23,14 @@ wiki = WikiApi({"locale": "en"})  # to specify your locale, 'en' is default
 word_list = ["where", "about", "whether", "really"]
 
 
+def playing_spelling(request):
+  contexts = request.get("contexts")
+  for context in result.get("contexts"):
+    if context.get("name") == "spell":
+      return True
+  return False
+
+
 def get_word_just_spelled(result):
   word = None
   for context in result.get("contexts"):
@@ -110,11 +118,7 @@ def play_vocab(req):
   }
 
 def quiz(req):
-  result = req.get("result")
-  parameters = result.get("parameters")
-  game = parameters.get("Game")
-
-  if "spell" in game:
+  if playing_spelling(req):
     json_string = play_spelling(req)
   else:
     json_string = play_vocab(req)
