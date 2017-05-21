@@ -21,13 +21,13 @@ app = Flask(__name__)
 # word_list = ["where", "about", "whether", "really"]
 # word_list = []
 
-WHAT_DO_YOU_WANT_TO_SPELL = "What words do you want to spell? "
-RIGHT_ANSWER = "Correct! "
-WRONG_ANSWER = "Not correct. "
+WHAT_DO_YOU_WANT_TO_SPELL = "Tell me your spelling list. "
+RIGHT_ANSWER = "Yep. "
+WRONG_ANSWER = "Close. "
 TRY_AGAIN = "Try again. "
 SPELL_PROMPT = "Spell "
 GREAT_JOB = "Great job, you spelled all of your words!! "
-EXIT_QUERY = "More spelling or all done? "
+EXIT_QUERY = "More spelling, or all done? "
 
 
 def playing_spelling(req):
