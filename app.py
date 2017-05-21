@@ -39,7 +39,9 @@ def get_game(req):
 def get_problem_index(req, game):
   for context in req.get(RESULT).get(CONTEXTS):
     if context.get("name") == game:
-      return int(context.get("parameters").get("Index"))
+      index = context.get("parameters").get("Index")
+      if index:
+        return int(index)
   return None
 
 
