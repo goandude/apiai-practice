@@ -23,13 +23,33 @@ wiki = WikiApi({"locale": "en"})  # to specify your locale, 'en' is default
 word_list = ["where", "about", "whether", "really"]
 
 
+def get_word_just_spelled(result):
+  word = None
+  for context in result.get("contexts"):
+    if context.get("name") == "spell":
+      word = context.get("parameters").get("Word")
+      break
+  print("DEBUG: Word just spelled is %s" % (word))
+  return word
+
+
+def get_what_user_said(result):
+    parameters = result.get("parameters")
+    users_word = parameters.get("text")
+    print("DEBUG: User said %s" % (users_word))
+    return users_word
+
+
 def get_next_word(current_word):
+  word = None
   if current_word is None:
-    return word_list[0]
-  for i, word in enumerate(word_list):
-    if current_word == word and i < len(word_list) - 1:
-      return word_list[i + 1]
-  return None
+    word = word_list[0]
+  else:
+    for i, word in enumerate(word_list):
+      if current_word == word and i < len(word_list) - 1:
+        word = word_list[i + 1]
+  print("DEBUG: Next word to spell is %s" % (word))
+  return word
 
 
 def play_spelling(req):
@@ -37,38 +57,34 @@ def play_spelling(req):
 
   print("DEBUG: Playing spelling")
   
-  word = None
-  for context in result.get("contexts"):
-    if context.get("name") == "spell":
-      word = context.get("parameters").get("Word")
-      break
-  print("DEBUG: Word is %s" % (word))
+  word_just_spelled = get_word_just_spelled(result)
+  what_to_say_next = "Hmm..."
   
-  if word is None:
-      next_word = get_next_word(word)
-      result = "Spell %s" % next_word
+  if word_just_spelled is None:
+      next_word = get_next_word(word_just_spelled)
+      what_to_say_next = "Spell %s" % next_word
   else:  
-      next_word = None
-      parameters = result.get("parameters")
-      users_word = parameters.get("text")
+      users_word = get_what_user_said(result)
 
+      next_word = None
       if users_word is not None:
-        if word == users_word:
-          next_word = get_next_word(word)
-          result = "Correct! "
+        if word_just_spelled == users_word:
+          what_to_say_next = "Correct! "
+
+          next_word = get_next_word(word_just_spelled)
           if next_word is not None:
-            result += "Spell %s" % next_word
+            what_to_say_next += "Spell %s" % next_word
           else:
-            result += "No more words to spell"
+            what_to_say_next += "No more words to spell"
         else:
-          next_word = word
-          result = "Not correct. Try again. %s" % next_word
+          next_word = word_just_spelled
+          what_to_say_next = "Not correct. Try again. %s" % next_word
 
   return {
       "speech":
-          result,
+          what_to_say_next,
       "displayText":
-          result,
+          what_to_say_next,
       "contextOut": [
           {
               "name": "spell",
