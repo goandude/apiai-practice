@@ -45,7 +45,7 @@ def quiz(req):
   parameters = result.get("parameters")
   game = parameters.get("Game")
 
-  if game == "spelling":
+  if "spell" in game:
     json_string = play_spelling(req)
   else:
     json_string = play_vocab(req)
