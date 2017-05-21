@@ -18,39 +18,33 @@ from flask import make_response
 # Flask app should start in global layout
 app = Flask(__name__)
 
-SPELL = "spell"
-VOCAB = "vocab"
-READ = "read"
-RESULT = "result"
-CONTEXTS = "contexts"
-
 word_list = ["where", "about", "whether", "really"]
-games = set([SPELL, VOCAB, READ])
 
 
-def get_game(req):
-  for context in req.get(RESULT).get(CONTEXTS):
-    game = context.get("name")
-    if game in games:
-      return game
-  return None
+def playing_spelling(req):
+  result = req.get("result")
+  for context in result.get("contexts"):
+    if context.get("name") == "spell":
+      return True
+  return False
 
 
-def get_problem_index(req, game):
-  for context in req.get(RESULT).get(CONTEXTS):
-    if context.get("name") == game:
+def get_word_just_asked(result):
+  word = None
+  for context in result.get("contexts"):
+    if context.get("name") == "spell":
+      word = context.get("parameters").get("Word")
       index = context.get("parameters").get("Index")
-      print("DEBUG: Index %s." % (index))
-      if index:
-        return int(index)
-  return -1
+      break
+  print("DEBUG: Word just asked is %s" % (word))
+  return word, index
 
 
-def get_what_user_said(req):
-  parameters = req.get(RESULT).get("parameters")
-  users_word = parameters.get("any")
-  print("DEBUG: User said %s" % (users_word))
-  return users_word
+def get_what_user_said(result):
+    parameters = result.get("parameters")
+    users_word = parameters.get("any")
+    print("DEBUG: User said %s" % (users_word))
+    return users_word
 
 
 def set_word_list(input_text):
@@ -58,12 +52,11 @@ def set_word_list(input_text):
 
 
 def get_next_word(index):
-  print("DEBUG: Get word after %d" % (index))
   idx = int(index)
   if idx < len(word_list) - 1:
-    idx += 1
-    word = word_list[idx]
-    index = str(idx)
+      idx = idx + 1
+      word = word_list[idx]
+      index = str(idx)
   else:
     word = None
     index = -1
@@ -72,34 +65,35 @@ def get_next_word(index):
 
 
 def play_spelling(req):
+  result = req.get("result")
+
   print("DEBUG: Playing spelling")
+  
+  word_just_asked, index = get_word_just_asked(result)
+  what_to_say_next = "Hmm..."
+  
+  if word_just_asked is None:
+      next_index = 0
+      next_word = word_list[next_index]
+      what_to_say_next = "Spell %s" % next_word
+  else:  
+      users_word = get_what_user_said(result)
 
-  index = get_problem_index(req, SPELL)
-  print("DEBUG: Index2 is %d" % index)
-  if index < 0:
-    next_index = 0
-    next_word = word_list[next_index]
-    what_to_say_next = "Spell %s" % next_word
-  else:
-    word_just_asked = word_list[index]
-    what_to_say_next = "Hmm..."
-    users_word = get_what_user_said(req)
+      next_word = None
+      next_index = None
+      if users_word is not None:
+        if word_just_asked == users_word:
+          what_to_say_next = "Correct! "
 
-    next_word = None
-    next_index = None
-    if users_word is not None:
-      if word_just_asked == users_word:
-        what_to_say_next = "Correct! "
-
-        next_word, next_index = get_next_word(index)
-        if next_word is not None:
-          what_to_say_next += "Spell %s" % next_word
+          next_word, next_index = get_next_word(index)
+          if next_word is not None:
+            what_to_say_next += "Spell %s" % next_word
+          else:
+            what_to_say_next += "No more words to spell"
         else:
-          what_to_say_next += "No more words to spell"
-      else:
-        next_word = word_just_asked
-        next_index = index
-        what_to_say_next = "Not correct. Try again. %s" % next_word
+          next_word = word_just_asked
+          next_index = index
+          what_to_say_next = "Not correct. Try again. %s" % next_word
 
   return {
       "speech":
@@ -121,6 +115,7 @@ def play_spelling(req):
 
 
 def play_vocab(req):
+
   return {
       "speech": "Nothing to say",
       "displayText": "Nothing to say",
@@ -128,15 +123,11 @@ def play_vocab(req):
       "source": "apiai-practice"
   }
 
-
 def quiz(req):
-  game = get_game(req)
-  if game == SPELL:
+  if playing_spelling(req):
     json_string = play_spelling(req)
-  elif game == VOCAB:
-    json_string = play_vocab(req)
   else:
-    json_string = "???"
+    json_string = play_vocab(req)
 
   return json_string
 
