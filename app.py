@@ -26,31 +26,27 @@ word_list = ['where', 'about', 'whether', 'really']
 
 def webhookquiz():
     req = request.get_json(silent=True, force=True)
-
     print("Request:")
     print(json.dumps(req, indent=4))
+    
     res = quiz(req)
 
     res = json.dumps(res, indent=4)
-    # print(res)
     print("Response:")
-    r = make_response(res)    
-     
-    r.headers['Content-Type'] = 'application/json'
+    print(res)
 
+    r = make_response(res)    
+    r.headers['Content-Type'] = 'application/json'
     return r
 
 
-def quiz(req):
-    result = req.get("result")
+def quiz(request):
+    result = request.get("result")
     parameters = result.get("parameters")
     query = parameters.get("text")
     
     contexts = result.get("contexts")
     quizword = contexts[0].get("name")
-    
-    #query = "cat"
-    #quizword = "dog"
     
     print("query is ")
     print(query)
