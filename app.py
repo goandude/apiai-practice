@@ -18,7 +18,8 @@ from flask import make_response
 # Flask app should start in global layout
 app = Flask(__name__)
 
-word_list = ["where", "about", "whether", "really"]
+# word_list = ["where", "about", "whether", "really"]
+word_list = []
 
 
 def playing_spelling(req):
