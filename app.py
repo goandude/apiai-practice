@@ -81,40 +81,40 @@ def play_spelling(req):
 
   print("DEBUG: Playing spelling")
   
+  users_word = get_what_user_said(result)
+  
   word_just_asked, index, word_list = get_word_just_asked(result)
   if word_list:
     word_list = word_list.split()
   what_to_say_next = "Hmm..."
   
-  if not word_list:
-      users_word = get_what_user_said(result)
-      if "spell" in users_word:
-        what_to_say_next = random.choice(WHAT_DO_YOU_WANT_TO_SPELL)
-        next_word = None
-        next_index = None
-      else:
-        word_list = set_word_list(users_word)
-        print("DEBUG: Set word list to " , word_list)
-        next_index = 0
-        next_word = word_list[next_index]
-        what_to_say_next = "%s %s" % (random.choice(SPELL_PROMPT), next_word)
+  if "spell" in users_word or "more spelling" in users_word:
+    what_to_say_next = random.choice(WHAT_DO_YOU_WANT_TO_SPELL)
+    next_word = None
+    next_index = None
+    word_list = None
+  elif not word_list:
+    word_list = set_word_list(users_word)
+    print("DEBUG: Set word list to " , word_list)
+    next_index = 0
+    next_word = word_list[next_index]
+    what_to_say_next = "%s %s" % (random.choice(SPELL_PROMPT), next_word)
   else:    
-      users_word = get_what_user_said(result)
-      next_word = None
-      next_index = None
-      if users_word is not None:
-        if word_just_asked == "".join(users_word.split()):
-          what_to_say_next = random.choice(RIGHT_ANSWER)
+    next_word = None
+    next_index = None
+    if users_word is not None:
+      if word_just_asked == "".join(users_word.split()):
+        what_to_say_next = random.choice(RIGHT_ANSWER)
 
-          next_word, next_index = get_next_word(index, word_list)
-          if next_word is not None:
-            what_to_say_next += "%s %s" % (random.choice(SPELL_PROMPT), next_word)
-          else:
-            what_to_say_next += random.choice(GREAT_JOB) + EXIT_QUERY
+        next_word, next_index = get_next_word(index, word_list)
+        if next_word is not None:
+          what_to_say_next += "%s %s" % (random.choice(SPELL_PROMPT), next_word)
         else:
-          next_word = word_just_asked
-          next_index = index
-          what_to_say_next = "%s. %s. %s. %s." % (random.choice(WRONG_ANSWER), ", ".join(next_word), random.choice(TRY_AGAIN), next_word)
+          what_to_say_next += random.choice(GREAT_JOB) + EXIT_QUERY
+      else:
+        next_word = word_just_asked
+        next_index = index
+        what_to_say_next = "%s. %s. %s. %s." % (random.choice(WRONG_ANSWER), ", ".join(next_word), random.choice(TRY_AGAIN), next_word)
 
   next_word_list = None
   if word_list is not None:
