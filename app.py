@@ -96,8 +96,6 @@ def play_spelling(req):
           {
               "name": "spell",
               "parameters": {
-                  "Game.original": "spell",
-                  "Game": "spelling",
                   "Word": next_word,
               },
           },
