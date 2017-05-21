@@ -63,7 +63,7 @@ def play_spelling(request):
         if context.get("name") == 'spell':
             word = context.get("parameters").get("Word")
             break
-    print("Word is " % (word))
+    print("Word is %s" % (word))
     
     parameters = result.get("parameters")
     users_word = parameters.get("text")
