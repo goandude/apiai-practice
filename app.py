@@ -23,34 +23,13 @@ wiki = WikiApi({"locale": "en"})  # to specify your locale, 'en' is default
 word_list = ["where", "about", "whether", "really"]
 
 
-@app.route("/webhookquiz", methods=["POST"])
-def webhookquiz():
-  req = request.get_json(silent=True, force=True)
-  print("Request:")
-  print(json.dumps(req, indent=4))
-
-  res = quiz(req)
-
-  res = json.dumps(res, indent=4)
-  print("Response:")
-  print(res)
-
-  r = make_response(res)
-  r.headers["Content-Type"] = "application/json"
-  return r
-
-
-def quiz(req):
-  result = req.get("result")
-  parameters = result.get("parameters")
-  game = parameters.get("Game")
-
-  if "spell" in game:
-    json_string = play_spelling(req)
-  else:
-    json_string = play_vocab(req)
-
-  return json_string
+def get_next_word(current_word):
+  if current_word is None:
+    return word_list[0]
+  for i, word in enumerate(word_list):
+    if current_word == word and i < len(word_list) - 1:
+      return word_list[i + 1]
+  return None
 
 
 def play_spelling(req):
@@ -105,15 +84,6 @@ def play_spelling(req):
   }
 
 
-def get_next_word(current_word):
-  if current_word is None:
-    return word_list[0]
-  for i, word in enumerate(word_list):
-    if current_word == word and i < len(word_list) - 1:
-      return word_list[i + 1]
-  return None
-
-
 def play_vocab(req):
 
   return {
@@ -122,6 +92,35 @@ def play_vocab(req):
       "contextOut": [],
       "source": "apiai-practice"
   }
+
+def quiz(req):
+  result = req.get("result")
+  parameters = result.get("parameters")
+  game = parameters.get("Game")
+
+  if "spell" in game:
+    json_string = play_spelling(req)
+  else:
+    json_string = play_vocab(req)
+
+  return json_string
+
+
+@app.route("/webhookquiz", methods=["POST"])
+def webhookquiz():
+  req = request.get_json(silent=True, force=True)
+  print("Request:")
+  print(json.dumps(req, indent=4))
+
+  res = quiz(req)
+
+  res = json.dumps(res, indent=4)
+  print("Response:")
+  print(res)
+
+  r = make_response(res)
+  r.headers["Content-Type"] = "application/json"
+  return r
 
 
 if __name__ == "__main__":
