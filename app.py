@@ -21,12 +21,13 @@ app = Flask(__name__)
 # word_list = ["where", "about", "whether", "really"]
 # word_list = []
 
-WHAT_DO_YOU_WANT_TO_SPELL = "What words do you want to spell?"
+WHAT_DO_YOU_WANT_TO_SPELL = "What words do you want to spell? "
 RIGHT_ANSWER = "Correct! "
-WRONG_ANSWER = "Not correct. Try again."
+WRONG_ANSWER = "Not correct. "
+TRY_AGAIN = "Try again. "
 SPELL_PROMPT = "Spell "
-GREAT_JOB = "Great job, you spelled all of your words!!"
-EXIT_QUERY = "More spelling or all done?"
+GREAT_JOB = "Great job, you spelled all of your words!! "
+EXIT_QUERY = "More spelling or all done? "
 
 
 def playing_spelling(req):
@@ -90,7 +91,7 @@ def play_spelling(req):
   if not word_list:
       users_word = get_what_user_said(result)
       if "spell" in users_word:
-        what_to_say_next = "What words do you want to spell?"
+        what_to_say_next = WHAT_DO_YOU_WANT_TO_SPELL
         next_word = None
         next_index = None
       else:
@@ -98,24 +99,24 @@ def play_spelling(req):
         print("DEBUG: Set word list to " , word_list)
         next_index = 0
         next_word = word_list[next_index]
-        what_to_say_next = "Spell %s" % next_word
+        what_to_say_next = "%s %s" % (SPELL_PROMPT, next_word)
   else:    
       users_word = get_what_user_said(result)
       next_word = None
       next_index = None
       if users_word is not None:
         if word_just_asked == users_word:
-          what_to_say_next = "Correct! "
+          what_to_say_next = RIGHT_ANSWER
 
           next_word, next_index = get_next_word(index, word_list)
           if next_word is not None:
-            what_to_say_next += "Spell %s" % next_word
+            what_to_say_next += "%s %s" % (SPELL_PROMPT, next_word)
           else:
-            what_to_say_next += "Great job, you spelled all of your words!! More spelling or all done?"
+            what_to_say_next += GREAT_JOB + EXIT_QUERY
         else:
           next_word = word_just_asked
           next_index = index
-          what_to_say_next = "Not correct. %s. Try again. %s" % (", ".join(next_word), next_word)
+          what_to_say_next = "%s. %s. %s. %s." % (WRONG_ANSWER, ", ".join(next_word), TRY_AGAIN, next_word)
 
   next_word_list = None
   if word_list is not None:
