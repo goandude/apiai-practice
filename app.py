@@ -102,7 +102,7 @@ def play_spelling(req):
       next_word = None
       next_index = None
       if users_word is not None:
-        if word_just_asked == users_word:
+        if word_just_asked == "".join(users_word.split()):
           what_to_say_next = RIGHT_ANSWER
 
           next_word, next_index = get_next_word(index, word_list)
