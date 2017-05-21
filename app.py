@@ -40,6 +40,7 @@ def get_problem_index(req, game):
   for context in req.get(RESULT).get(CONTEXTS):
     if context.get("name") == game:
       index = context.get("parameters").get("Index")
+      print("DEBUG: Index %s." % (index))
       if index:
         return int(index)
   return None
