@@ -115,7 +115,7 @@ def play_spelling(req):
         else:
           next_word = word_just_asked
           next_index = index
-          what_to_say_next = "Not correct. %s Try again. %s" % (" ".join(next_word), next_word)
+          what_to_say_next = "Not correct. %s. Try again. %s" % (", ".join(next_word), next_word)
 
   next_word_list = None
   if word_list is not None:
