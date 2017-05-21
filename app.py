@@ -24,7 +24,8 @@ app = Flask(__name__)
 
 WHAT_DO_YOU_WANT_TO_SPELL = ["Tell me your spelling list. ", "What are your words today? "]
 RIGHT_ANSWER = ["Yep. ", "That's right. ", "Nice! ", "Well done! ", "Good. "]
-WRONG_ANSWER = ["Close. ", "Almost. "]
+WRONG_ANSWER = ["Close. ", "Almost. ", "Nearly"]
+ACK = ["Got it. ", "OK. ", "Here we go. "]
 TRY_AGAIN = ["Try again. "]
 SPELL_PROMPT = ["Spell "]
 GREAT_JOB = ["Great job, you spelled all of your words!! ", "Way to go, you did a great job!! "]
@@ -89,7 +90,7 @@ def play_spelling(req):
   what_to_say_next = "Hmm..."
   
   if "spell" in users_word or "more spelling" in users_word:
-    what_to_say_next = random.choice(WHAT_DO_YOU_WANT_TO_SPELL)
+    what_to_say_next = "%s %s" % (random.choice(ACK), random.choice(WHAT_DO_YOU_WANT_TO_SPELL))
     next_word = None
     next_index = None
     word_list = None
@@ -98,7 +99,7 @@ def play_spelling(req):
     print("DEBUG: Set word list to " , word_list)
     next_index = 0
     next_word = word_list[next_index]
-    what_to_say_next = "%s %s" % (random.choice(SPELL_PROMPT), next_word)
+    what_to_say_next = "%s %s %s" % (random.choice(ACK), random.choice(SPELL_PROMPT), next_word)
   else:    
     next_word = None
     next_index = None
