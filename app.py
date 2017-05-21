@@ -43,7 +43,7 @@ def get_problem_index(req, game):
       print("DEBUG: Index %s." % (index))
       if index:
         return int(index)
-  return None
+  return -1
 
 
 def get_what_user_said(req):
@@ -74,7 +74,7 @@ def play_spelling(req):
   print("DEBUG: Playing spelling")
 
   index = get_problem_index(req, SPELL)
-  if not index:
+  if index < 0:
     next_index = 0
     next_word = word_list[next_index]
     what_to_say_next = "Spell %s" % next_word
