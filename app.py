@@ -40,7 +40,7 @@ def get_word_just_asked(result):
       if word_list:
         word_list = word_list.split()
       break
-  print("DEBUG: Word just asked is %s" % (word))
+  print("DEBUG: Word just asked is %s, %s, %s" % (word, index, word_list))
   return word, index, word_list
 
 
