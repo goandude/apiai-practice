@@ -46,6 +46,10 @@ def get_what_user_said(result):
     return users_word
 
 
+def set_word_list(input_text):
+  return input_text.lower().split()
+
+
 def get_next_word(current_word):
   word = None
   if current_word is None:
@@ -125,13 +129,13 @@ def quiz(req):
 @app.route("/webhookquiz", methods=["POST"])
 def webhookquiz():
   req = request.get_json(silent=True, force=True)
-  print("Request:")
+  print("DEBUG: Request:")
   print(json.dumps(req, indent=4))
 
   res = quiz(req)
 
   res = json.dumps(res, indent=4)
-  print("Response:")
+  print("DEBUG: Response:")
   print(res)
 
   r = make_response(res)
