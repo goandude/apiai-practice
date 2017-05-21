@@ -30,7 +30,7 @@ def playing_spelling(req):
   return False
 
 
-def get_word_just_asked2(result):
+def get_word_just_asked(result):
   word = None
   for context in result.get("contexts"):
     if context.get("name") == "spell":
