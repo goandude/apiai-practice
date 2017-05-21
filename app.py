@@ -39,7 +39,7 @@ def get_game(req):
 def get_problem_index(req, game):
   for context in req.get(RESULT).get(CONTEXTS):
     if context.get("name") == game:
-      return context.get("parameters").get("Index")
+      return int(context.get("parameters").get("Index"))
   return None
 
 
@@ -71,14 +71,13 @@ def play_spelling(req):
   print("DEBUG: Playing spelling")
 
   index = get_problem_index(req, SPELL)
-  word_just_asked = word_list[index]
-  what_to_say_next = "Hmm..."
-
-  if word_just_asked is None:
+  if not index:
     next_index = 0
     next_word = word_list[next_index]
     what_to_say_next = "Spell %s" % next_word
   else:
+    word_just_asked = word_list[index]
+    what_to_say_next = "Hmm..."
     users_word = get_what_user_said(req)
 
     next_word = None
