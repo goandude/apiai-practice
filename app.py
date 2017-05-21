@@ -30,13 +30,13 @@ def playing_spelling(request):
   return False
 
 
-def get_word_just_spelled(result):
+def get_word_just_asked(result):
   word = None
   for context in result.get("contexts"):
     if context.get("name") == "spell":
       word = context.get("parameters").get("Word")
       break
-  print("DEBUG: Word just spelled is %s" % (word))
+  print("DEBUG: Word just asked is %s" % (word))
   return word
 
 
@@ -64,10 +64,10 @@ def play_spelling(req):
 
   print("DEBUG: Playing spelling")
   
-  word_just_spelled = get_word_just_spelled(result)
+  word_just_asked = get_word_just_asked(result)
   what_to_say_next = "Hmm..."
   
-  if word_just_spelled is None:
+  if word_just_asked is None:
       next_word = get_next_word(word_just_spelled)
       what_to_say_next = "Spell %s" % next_word
   else:  
@@ -75,16 +75,16 @@ def play_spelling(req):
 
       next_word = None
       if users_word is not None:
-        if word_just_spelled == users_word:
+        if word_just_asked == users_word:
           what_to_say_next = "Correct! "
 
-          next_word = get_next_word(word_just_spelled)
+          next_word = get_next_word(word_just_asked)
           if next_word is not None:
             what_to_say_next += "Spell %s" % next_word
           else:
             what_to_say_next += "No more words to spell"
         else:
-          next_word = word_just_spelled
+          next_word = word_just_asked
           what_to_say_next = "Not correct. Try again. %s" % next_word
 
   return {
