@@ -58,6 +58,7 @@ def set_word_list(input_text):
 
 
 def get_next_word(index):
+  print("DEBUG: Get word after %d" % (index))
   idx = int(index)
   if idx < len(word_list) - 1:
     idx += 1
@@ -74,6 +75,7 @@ def play_spelling(req):
   print("DEBUG: Playing spelling")
 
   index = get_problem_index(req, SPELL)
+  print("DEBUG: Index2 is %d" % index)
   if index < 0:
     next_index = 0
     next_word = word_list[next_index]
