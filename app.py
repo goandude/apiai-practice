@@ -67,7 +67,7 @@ def play_spelling(req):
   what_to_say_next = "Hmm..."
   
   if word_just_asked is None:
-      next_word = get_next_word(word_just_spelled)
+      next_word = get_next_word(word_just_asked)
       what_to_say_next = "Spell %s" % next_word
   else:  
       users_word = get_what_user_said(result)
